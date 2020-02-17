@@ -16,7 +16,7 @@ def arg_parse():
     parser.add_argument('--dataset', type=str, choices=['faust', 'keypointnet'])
     parser.add_argument('--category', type=str, default='02691156')  # only for keypointnet
     parser.add_argument('--root_path', type=str, default='./')
-    parser.add_argument('--model_name', type=str, default='')
+    parser.add_argument('--model_name', type=str, default=None)
     parser.add_argument('--phase', type=str, default='train')
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--seed', type=int, default=-1)
