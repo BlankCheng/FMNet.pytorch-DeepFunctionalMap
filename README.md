@@ -3,7 +3,7 @@ A pytorch implementation of Deep Functional Maps (FMNet).
 
 ## Introduction
 This is a pytorch implementation of [Deep Functional Maps](https://arxiv.org/abs/1704.08686). Groundtruth labels of FAUST correspondence are not used. For efficiency, 2048 points are randomly sampled from 6890 points on original meshes. The results may not be bijective.
-Update:Visualization pairs of KeyPointNet is post-processed by PMF to be bijective, while faust pairs are not.
+**Update:** Visualization pairs of KeyPointNet is post-processed by PMF to be bijective, while faust pairs are not.
 
 ## Usage
 Build shot calculator:
