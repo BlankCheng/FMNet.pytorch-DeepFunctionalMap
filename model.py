@@ -50,14 +50,14 @@ class FeatRefineLayer(nn.Module):
 
 
 class ResLayer(nn.ModuleList):
-    def __init__(self, in_channels=352, out_channels=352, mid_channels=352):
+    def __init__(self, in_channels, out_channels, mid_channels):
         super(ResLayer, self).__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.fc1 = nn.Linear(in_channels, mid_channels)
-        self.bn1 = nn.BatchNorm1d(NUM_POINTS)  # !!! doubt!!!
+        self.bn1 = nn.BatchNorm1d(num_features=mid_channels, eps=1e-3, momentum=1e-3)
         self.fc2 = nn.Linear(mid_channels, out_channels)
-        self.bn2 = nn.BatchNorm1d(NUM_POINTS)  # !!! doubt!!!
+        self.bn2 = nn.BatchNorm1d(num_features=out_channels, eps=1e-3, momentum=1e-3)
         self.fc3 = None
         if in_channels != out_channels:
             self.fc3 = nn.Linear(in_channels, out_channels)
@@ -68,12 +68,13 @@ class ResLayer(nn.ModuleList):
         :param x: B * 2048 * 352, refining point-wise feature of x
         :return: B * 2048 * 352, refining point-wise feature of x
         """
-        x_res = F.relu(self.bn1(self.fc1(x)))
-        x_res = self.bn2(self.fc2(x_res))
+        x_res = F.relu(self.bn1(self.fc1(x).transpose(1, 2)).transpose(1, 2))
+        x_res = self.bn2(self.fc2(x_res).transpose(1, 2)).transpose(1, 2)
         if self.in_channels != self.out_channels:
             x = self.fc3(x)
-        x = F.relu(x + x_res)
-        return x
+        x_res += x
+        return x_res
+
 
 
 class CorresLayer(nn.Module):
