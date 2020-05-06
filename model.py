@@ -35,7 +35,7 @@ class FeatRefineLayer(nn.Module):
         self.out_channels_list = out_channels_list
         self.res_layers = nn.ModuleList()
         for out_channels in self.out_channels_list:
-            self.res_layers.append(ResLayer(in_channels, out_channels))
+            self.res_layers.append(ResLayer(in_channels, out_channels, out_channels))
             in_channels = out_channels
 
     def forward(self, x):
